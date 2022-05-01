@@ -1,5 +1,5 @@
 import { html, css, LitElement } from 'lit';
-import "@vaadin/vaadin-button"
+
 export class VCard extends LitElement {
   static get styles() {
     return css`
