@@ -19,6 +19,9 @@ export class VCard extends LitElement {
         border-color: rgb(192, 192, 192);
         box-shadow: 0 0 20px 8px #d0d0d0;
     }
+    .container:hover {
+      cursor: pointer;
+    }
     .container > * {
       padding: 1em;
     }
@@ -33,13 +36,13 @@ export class VCard extends LitElement {
       width: 50px;
       height: 50px;
       border-radius: 50%;
+      padding-right: 1em;
     }
     .avatar:hover {
       box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
     }
     .header-text {
         text-align: left;
-        padding-left: 1em;
     }
     .supporting-text {
         text-align: justify;

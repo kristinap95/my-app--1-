@@ -21,6 +21,21 @@ public class VueCard extends LitTemplate {
     public VueCard() {
         super();
     }
+    public String getHeadertext() {
+        return getElement().getProperty("headertext");
+    }
+    public String getThumbnail() {
+        return getElement().getProperty("thumbnail");
+    }
+    public String getSubheadText() {
+        return getElement().getProperty("subhead");
+    }
+    public String getMedia() {
+        return getElement().getProperty("media");
+    }
+    public String getSupportText() {
+        return getElement().getProperty("supporttext");
+    }
     public void setThumbnail(String thumbnail) {
         getElement().setProperty("thumbnail", thumbnail);
     }

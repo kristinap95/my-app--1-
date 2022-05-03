@@ -1,11 +1,10 @@
 package com.example.application.views.vuecard;
 
-import java.util.LinkedList;
-import java.util.List;
 
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.orderedlayout.*;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -14,37 +13,49 @@ import com.vaadin.flow.router.RouteAlias;
 @Route(value = "card-list", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
 
-public class VueCardView extends HorizontalLayout {
+public class VueCardView extends VerticalLayout {
 
-    List<VueCard> cards = new LinkedList<>();
-
-    public List<VueCard> getCards() {
-        return cards;
-    }
-    public VueCard saveCard(VueCard card) {
-        cards.add(card);
-        return card;
-    }
     public VueCardView() {
        
-        VueCard vc = new VueCard();
-        vc.setMedia("https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg");
+        Button addNew = new Button("Add new");
+        addNew.setThemeName("primary");
+        add(addNew);
 
-        Button action1 = new Button("Action 1");
-        action1.addClickListener(ClickEvent -> {
-            vc.setMedia("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUnHF-H-QVm1OVR7VhLpyTdUjBROeCVYVHBg&usqp=CAU");
+        Dialog modal = new Dialog();
+        modal.setCloseOnOutsideClick(true);
+        addNew.addClickListener(ClickEvent -> {
+            modal.open();
         });
-        vc.addButton(action1);
+        modal.setResizable(true);
 
-        Button action2 = new Button("Action 2");
-        action2.addClickListener(ClickEvent -> {
-            vc.setMedia("https://i.pinimg.com/originals/42/63/2f/42632f4d48030c4b04bdeb2bbe00e313.jpg");
+        AddCard cardForm = new AddCard();
+        modal.add(cardForm);
+        cardForm.getCancelButton().addClickListener(e -> modal.close());
+        cardForm.getSaveButton().addClickListener(e -> {
+            VueCard vc = new VueCard();
+            //vc.thumbnail
+            vc.setHeadertext(cardForm.getHeaderText());
+            vc.setSubhead(cardForm.getSubheadText());
+            //vc.media
+            vc.setSupporttext(cardForm.getSupportText());
+            if(cardForm.getBtn1().hasThemeName("primary")) {
+                Button action1 = new Button("Action 1");
+                action1.addClickListener(ClickEvent -> {
+                    vc.setMedia("https://media.istockphoto.com/photos/villefranche-on-sea-in-evening-picture-id1145618475?k=20&m=1145618475&s=612x612&w=0&h=_mC6OZt_eWENYUAZz3tLCBTU23uvx5beulDEZHFLsxI=");
+                });
+                vc.addButton(action1);
+            }
+            if(cardForm.getBtn2().hasThemeName("primary")) {
+                Button action2 = new Button("Action 2");
+                action2.addClickListener(ClickEvent -> {
+                    vc.setMedia("https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg");
+                });
+                vc.addButton(action2);
+            }
+            modal.close();
+            add(vc);
+            cardForm.setEmpty();
         });
-        vc.addButton(action2);
-
-        add(vc);
-
-        this.setPadding(true);
-
     }
+
 }
