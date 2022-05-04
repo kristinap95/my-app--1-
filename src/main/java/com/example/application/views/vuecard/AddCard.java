@@ -9,8 +9,6 @@ import com.vaadin.flow.component.template.Id;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
-import com.vaadin.flow.component.upload.receivers.FileBuffer;
-import com.vaadin.flow.component.upload.receivers.FileData;
 import com.vaadin.flow.router.PageTitle;
 
 
@@ -18,9 +16,9 @@ import com.vaadin.flow.router.PageTitle;
 @Tag("v-card-form")
 @JsModule("../frontend/src/addNew.js")
 public class AddCard extends LitTemplate {
-    
+   
     @Id("thumbnail")
-    private Avatar thumbnail;
+    private Avatar thumbnailImg;
 
     @Id("header")
     private TextField headerText;
@@ -55,6 +53,10 @@ public class AddCard extends LitTemplate {
         this.supportText.setValue("");
         this.subheadText.setValue("");
     }
+    public String getThumbnailURL() {
+        System.out.print(this.thumbnailImg.getImage());
+        return this.thumbnailImg.getImage(); // return null ????
+    }
     public String getHeaderText() {
         return this.headerText.getValue();
     }
@@ -75,18 +77,6 @@ public class AddCard extends LitTemplate {
     }
     public Button getSaveButton() {
         return this.save;
-    }
-    public void getMediaURL() {
-        FileBuffer fileBuffer = new FileBuffer();
-        mediaImg = new Upload(fileBuffer);
-
-        mediaImg.addSucceededListener(event -> {
-            // Get information about the file that was written to the file system
-            FileData savedFileData = fileBuffer.getFileData();
-            String absolutePath = savedFileData.getFile().getAbsolutePath();
-
-            System.out.printf("File saved to: %s%n", absolutePath);
-        });
     }
     public void editButtons() {
         this.btn1.addClickListener(ClickEvent -> {

@@ -4,7 +4,6 @@ import "@vaadin/text-area";
 import "@vaadin/vaadin-button";
 import "@vaadin/vaadin-upload";
 import "@vaadin/avatar";
-import { UploadBeforeEvent } from '@vaadin/upload';
 
 export class newCardForm extends LitElement {
   static get styles() {
@@ -24,6 +23,10 @@ export class newCardForm extends LitElement {
     }
     .thumbnail {
       place-self: center;
+    }
+    .remove-thumbnail {
+      display: none;
+      color: red;
     }
     svg {
         color: rgb(156 163 175);
@@ -58,17 +61,43 @@ export class newCardForm extends LitElement {
     }
         `;
   }
+  static get properties() {
+    return {
+      thumbnailImg: {type:Object},
+    }
+  }
   constructor() {
     super();
   }
   printed(e) {
     console.log("YOU ARE HEREEEE", e);
   }
+  chooseThumbnail() {
+      this.thumbnailImg = this.shadowRoot.getElementById("uploadThumbnail");
+      this.thumbnailImg.click();
+  }
+  uploadThumbnail() {
+    const avatarImg = this.shadowRoot.getElementById("thumbnail");
+    try {
+      avatarImg.img = URL.createObjectURL(this.thumbnailImg.files[0]);
+      avatarImg.onload = function() {
+        URL.revokeObjectURL(avatarImg.img);
+      }
+    }
+    catch {}
+  }
+  removeThumbnail() {
+    
+  }
   render() {
     return html`
       <div class="grid">
         <div class="thumbnail">
-            <vaadin-avatar id="thumbnail" theme="xlarge"></vaadin-avatar>
+          <button @click="${this.chooseThumbnail}">
+            <vaadin-avatar id="thumbnail" theme="xlarge" mimeType="image/png"></vaadin-avatar>
+            <input id="uploadThumbnail" type="file" style="display:none" @change="${this.uploadThumbnail}"/>
+          </button>
+          <vaadin-icon icon="lumo:cross" class="remove-thumbnail" @click="${this.removeThumbnail}"></vaadin-icon>
         </div>
         <div class="col-span-2">
             <vaadin-text-field id="header" placeholder="Title goes here..."></vaadin-text-field>

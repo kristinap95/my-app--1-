@@ -33,7 +33,7 @@ public class VueCardView extends VerticalLayout {
         cardForm.getCancelButton().addClickListener(e -> modal.close());
         cardForm.getSaveButton().addClickListener(e -> {
             VueCard vc = new VueCard();
-            //vc.thumbnail
+            vc.setThumbnail(cardForm.getThumbnailURL());
             vc.setHeadertext(cardForm.getHeaderText());
             vc.setSubhead(cardForm.getSubheadText());
             //vc.media
