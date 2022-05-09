@@ -1,11 +1,12 @@
 package com.example.application.views.vuecard;
 
-import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.JsModule;
-import com.vaadin.flow.component.littemplate.LitTemplate;
-import com.vaadin.flow.component.template.Id;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
@@ -13,48 +14,50 @@ import com.vaadin.flow.router.PageTitle;
 
 
 @PageTitle("Vue Card")
-@Tag("v-card-form")
-@JsModule("../frontend/src/addNew.js")
-public class AddCard extends LitTemplate {
-   
-    @Id("thumbnail")
-    private Avatar thumbnailImg;
+public class AddCard extends Div {
 
-    @Id("header")
-    private TextField headerText;
-    
-    @Id("subhead")
-    private TextField subheadText;
+    protected Avatar thumbnailImg;
+    protected TextField headerText, subheadText;
+    protected TextArea supportText;
+    protected Button btn1, btn2, cancel, save;
+    protected Upload media;
 
-    @Id("media")
-    private Upload mediaImg;
-
-    @Id("support")
-    private TextArea supportText;
-
-    @Id("btn1")
-    private Button btn1;
-
-    @Id("btn2")
-    private Button btn2;
-
-    @Id("cancelBtn")
-    private Button cancel;
-
-    @Id("saveBtn")
-    private Button save;
-
-    public void setEmpty() {
-        if(this.btn1.hasThemeName("primary")) 
-                this.btn1.removeThemeName("primary");
-        if(this.btn2.hasThemeName("primary")) 
-                this.btn2.removeThemeName("primary");
-        this.headerText.setValue("");
-        this.supportText.setValue("");
-        this.subheadText.setValue("");
+    public AddCard() {
+        super();
+        setWidth("100%");
+        thumbnailImg = new Avatar();
+        headerText = new TextField();
+        headerText.setPlaceholder("Title text here");
+        subheadText = new TextField();
+        subheadText.setPlaceholder("Subtitle text");
+        HorizontalLayout headerCard = new HorizontalLayout();
+        headerCard.add(thumbnailImg);
+        VerticalLayout headerFileds = new VerticalLayout();
+        headerFileds.add(headerText, subheadText);
+        headerCard.setAlignItems(Alignment.CENTER);
+        headerCard.add(headerFileds);
+        add(headerCard);
+        media = new Upload();
+        add(media);
+        supportText = new TextArea();
+        supportText.setPlaceholder("Supporting text");
+        supportText.addClassName("support-text");
+        add(supportText);
+        btn1 = new Button("Action1");
+        btn2 = new Button("Action2");
+        HorizontalLayout actions = new HorizontalLayout();
+        actions.add(btn1, btn2);
+        cancel = new Button("Cancel");
+        save = new Button("Save");
+        save.setThemeName("primary");
+        HorizontalLayout buttons = new HorizontalLayout();
+        buttons.setJustifyContentMode(JustifyContentMode.END);
+        buttons.add(cancel, save);
+        add(actions,buttons);
+        
+        editButtons();
     }
     public String getThumbnailURL() {
-        System.out.print(this.thumbnailImg.getImage());
         return this.thumbnailImg.getImage(); // return null ????
     }
     public String getHeaderText() {
@@ -80,25 +83,16 @@ public class AddCard extends LitTemplate {
     }
     public void editButtons() {
         this.btn1.addClickListener(ClickEvent -> {
-            if(this.btn1.hasThemeName("primary")) 
+            if (this.btn1.hasThemeName("primary"))
                 this.btn1.removeThemeName("primary");
-            else 
+            else
                 this.btn1.addThemeName("primary");
         });
         this.btn2.addClickListener(ClickEvent -> {
-            if(this.btn2.hasThemeName("primary")) 
+            if (this.btn2.hasThemeName("primary"))
                 this.btn2.removeThemeName("primary");
             else
                 this.btn2.addThemeName("primary");
         });
-    }
-    public AddCard() {
-        super();
-        this.supportText.setWidthFull();
-        this.supportText.setHeight("7rem");
-        this.supportText.getStyle().set("overflow","hidden");
-        this.subheadText.setWidthFull();
-        this.headerText.setWidthFull();
-        this.editButtons();
     }
 }
