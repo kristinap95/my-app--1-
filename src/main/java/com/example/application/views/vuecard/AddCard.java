@@ -1,41 +1,45 @@
 package com.example.application.views.vuecard;
 
 import com.vaadin.flow.component.avatar.Avatar;
+import com.vaadin.flow.component.avatar.AvatarVariant;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
+import com.vaadin.flow.component.orderedlayout.*;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
+import com.vaadin.flow.component.upload.receivers.FileBuffer;
+import com.vaadin.flow.component.upload.receivers.FileData;
 import com.vaadin.flow.router.PageTitle;
 
 
 @PageTitle("Vue Card")
-public class AddCard extends Div {
+public class AddCard extends VerticalLayout {
 
     protected Avatar thumbnailImg;
-    protected TextField headerText, subheadText;
+    protected TextField headerText, subheaderText;
     protected TextArea supportText;
     protected Button btn1, btn2, cancel, save;
     protected Upload media;
 
     public AddCard() {
         super();
-        setWidth("100%");
+        setId("card-form");
         thumbnailImg = new Avatar();
+        thumbnailImg.addThemeVariants(AvatarVariant.LUMO_XLARGE);
         headerText = new TextField();
         headerText.setPlaceholder("Title text here");
-        subheadText = new TextField();
-        subheadText.setPlaceholder("Subtitle text");
+        headerText.setWidthFull();
+        subheaderText = new TextField();
+        subheaderText.setPlaceholder("Subtitle text");
+        subheaderText.setWidthFull();
+        
         HorizontalLayout headerCard = new HorizontalLayout();
         headerCard.add(thumbnailImg);
-        VerticalLayout headerFileds = new VerticalLayout();
-        headerFileds.add(headerText, subheadText);
+        Div headerFields = new Div();
+        headerFields.add(headerText, subheaderText);
         headerCard.setAlignItems(Alignment.CENTER);
-        headerCard.add(headerFileds);
+        headerCard.add(headerFields);
         add(headerCard);
         media = new Upload();
         add(media);
@@ -56,15 +60,16 @@ public class AddCard extends Div {
         add(actions,buttons);
         
         editButtons();
+        uploadMedia();
     }
     public String getThumbnailURL() {
-        return this.thumbnailImg.getImage(); // return null ????
+        return this.thumbnailImg.getImage();
     }
     public String getHeaderText() {
         return this.headerText.getValue();
     }
-    public String getSubheadText() {
-        return this.subheadText.getValue();
+    public String getSubheaderText() {
+        return this.subheaderText.getValue();
     }
     public String getSupportText() {
         return this.supportText.getValue();
@@ -80,6 +85,16 @@ public class AddCard extends Div {
     }
     public Button getSaveButton() {
         return this.save;
+    }
+    public void uploadMedia() {
+        FileBuffer fileBuffer = new FileBuffer();
+        media = new Upload(fileBuffer);
+
+        media.addSucceededListener(event -> {
+            FileData savedFileData = fileBuffer.getFileData();
+            String absolutePath = savedFileData.getFile().getAbsolutePath();
+            System.out.printf("File saved to: %s%n", absolutePath);
+        });
     }
     public void editButtons() {
         this.btn1.addClickListener(ClickEvent -> {
