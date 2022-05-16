@@ -31,6 +31,9 @@ public class VueCardView extends VerticalLayout {
         AddCard cardForm = new AddCard();
         modal.add(cardForm);
         add(modal);
-    }
 
+        UploadImage image = new UploadImage();
+        add(image);
+        
+    }
 }

@@ -8,8 +8,6 @@ import com.vaadin.flow.component.orderedlayout.*;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
-import com.vaadin.flow.component.upload.receivers.FileBuffer;
-import com.vaadin.flow.component.upload.receivers.FileData;
 import com.vaadin.flow.router.PageTitle;
 
 
@@ -87,14 +85,7 @@ public class AddCard extends VerticalLayout {
         return this.save;
     }
     public void uploadMedia() {
-        FileBuffer fileBuffer = new FileBuffer();
-        media = new Upload(fileBuffer);
-
-        media.addSucceededListener(event -> {
-            FileData savedFileData = fileBuffer.getFileData();
-            String absolutePath = savedFileData.getFile().getAbsolutePath();
-            System.out.printf("File saved to: %s%n", absolutePath);
-        });
+        
     }
     public void editButtons() {
         this.btn1.addClickListener(ClickEvent -> {
